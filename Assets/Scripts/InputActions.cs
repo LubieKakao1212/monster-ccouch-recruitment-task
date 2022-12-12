@@ -142,6 +142,34 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Navigation"",
+            ""id"": ""dd0a4635-70d5-4103-a3d4-7dc129b22bf2"",
+            ""actions"": [
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f3ec194-db1c-4117-b371-d27a23484fee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5d79c927-6bf4-4f44-aa3f-ea10cf948a23"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -153,6 +181,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         // PlayerKeyboard
         m_PlayerKeyboard = asset.FindActionMap("PlayerKeyboard", throwIfNotFound: true);
         m_PlayerKeyboard_Move = m_PlayerKeyboard.FindAction("Move", throwIfNotFound: true);
+        // Navigation
+        m_Navigation = asset.FindActionMap("Navigation", throwIfNotFound: true);
+        m_Navigation_Exit = m_Navigation.FindAction("Exit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -282,6 +313,39 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerKeyboardActions @PlayerKeyboard => new PlayerKeyboardActions(this);
+
+    // Navigation
+    private readonly InputActionMap m_Navigation;
+    private INavigationActions m_NavigationActionsCallbackInterface;
+    private readonly InputAction m_Navigation_Exit;
+    public struct NavigationActions
+    {
+        private @InputActions m_Wrapper;
+        public NavigationActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Exit => m_Wrapper.m_Navigation_Exit;
+        public InputActionMap Get() { return m_Wrapper.m_Navigation; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NavigationActions set) { return set.Get(); }
+        public void SetCallbacks(INavigationActions instance)
+        {
+            if (m_Wrapper.m_NavigationActionsCallbackInterface != null)
+            {
+                @Exit.started -= m_Wrapper.m_NavigationActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_NavigationActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_NavigationActionsCallbackInterface.OnExit;
+            }
+            m_Wrapper.m_NavigationActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Exit.started += instance.OnExit;
+                @Exit.performed += instance.OnExit;
+                @Exit.canceled += instance.OnExit;
+            }
+        }
+    }
+    public NavigationActions @Navigation => new NavigationActions(this);
     public interface IPlayerMouseActions
     {
         void OnMousePosition(InputAction.CallbackContext context);
@@ -290,5 +354,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     public interface IPlayerKeyboardActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface INavigationActions
+    {
+        void OnExit(InputAction.CallbackContext context);
     }
 }

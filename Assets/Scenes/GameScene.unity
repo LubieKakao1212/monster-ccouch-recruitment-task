@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 1482841600}
   - component: {fileID: 1482841599}
   - component: {fileID: 1482841601}
+  - component: {fileID: 1482841602}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -278,6 +279,18 @@ MonoBehaviour:
     height: 10
   player: {fileID: 399411519}
   enemyPrefab: {fileID: 3736970931465693135, guid: 9c9bcfc8f4159bd40a1eab8df009acfe, type: 3}
+--- !u!114 &1482841602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482841598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731d935e6e61a83428a71041189da380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1580750277
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class InputManager : MonoBehaviour
     public event Action<bool> PlayerMoveMouseTriggerRaw;
     public event Action<Vector2> PlayerMoveMousePositionRaw;
 
+    public event Action ExitRaw;
+
     private InputActions input;
 
     private void Awake()
@@ -30,6 +32,8 @@ public class InputManager : MonoBehaviour
         input.PlayerMouse.MouseMove.canceled += (evnt) => PlayerMoveMouseTriggerRaw?.Invoke(false);
 
         input.PlayerMouse.MousePosition.performed += (evnt) => PlayerMoveMousePositionRaw?.Invoke(evnt.ReadValue<Vector2>());
+
+        input.Navigation.Exit.started += (evnt) => ExitRaw?.Invoke();
     }
 
     private void OnEnable()

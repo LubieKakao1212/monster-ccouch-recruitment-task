@@ -28,10 +28,13 @@ public class PlayerMovement : MonoBehaviour
     {
         var im = InputManager.Instance;
 
-        im.PlayerMoveMouseTriggerRaw -= SetMouseControll;
-        im.PlayerMoveMousePositionRaw -= ProcessMousePosition;
+        if (im != null)
+        {
+            im.PlayerMoveMouseTriggerRaw -= SetMouseControll;
+            im.PlayerMoveMousePositionRaw -= ProcessMousePosition;
 
-        im.PlayerMoveKeyboardRaw -= ProcessKeyboardInput;
+            im.PlayerMoveKeyboardRaw -= ProcessKeyboardInput;
+        }
     }
 
     private void SetMouseControll(bool value)
