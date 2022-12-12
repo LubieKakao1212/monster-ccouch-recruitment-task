@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[DefaultExecutionOrder(-100)]
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
@@ -39,5 +40,10 @@ public class InputManager : MonoBehaviour
     private void OnDisable()
     {
         input.Disable();
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 }
